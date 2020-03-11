@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="DeviceBatchWPF.Controls.BatchBuilding.DevTemplatesSelectControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:db="clr-namespace:DeviceBatchGenerics.Support;assembly=DeviceBatchGenerics"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <!-- this control allows the user to add devices to the DeviceBatchToAdd from premade templates -->
+    <UserControl.Resources>
+        <db:LayerTemplateSelector x:Key="layerTemplateSelector" 
+                                            DefaultDataTemplate="{StaticResource DefaultDataTemplate}" 
+                                            PatternedTCODataTemplate="{StaticResource ConcisePTCOTemplate}" 
+                                            SpinCoatedLayerDataTemplate="{StaticResource ConciseSpincoatedTemplate}" 
+                                            ThermallyEvaporatedLayerDataTemplate="{StaticResource ConciseThermallyEvaporatedTemplate}" 
+                                            EncapsulationDataTemplate="{StaticResource ConciseEncapsulationTemplate}"/>
+    </UserControl.Resources>
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0">Device templates in this batch:</Label>
+            <Button Grid.Column="1" Width="200" Content="Remove Selected Template" Background="CornflowerBlue"  Command="{Binding DeleteSelectedTemplate}"></Button>
+            <Button 
+                Grid.Column="2" 
+                HorizontalAlignment="Right"
+                Width="200"
+                Content="Create Devices and&#x0a;Go Select Materials" 
+                Background="OrangeRed"  
+                Command="{Binding AddDevicesFromTemplates}">
+            </Button>
+        </Grid>
+        <DataGrid   ItemsSource="{Binding TemplatesToAdd, UpdateSourceTrigger=PropertyChanged}" 
+                    AutoGenerateColumns="False" 
+                    SelectedItem="{Binding SelectedTemplate, Mode=TwoWay}" 
+                    SelectionMode="Single"
+                    SelectedIndex="0"
+                    IsSynchronizedWithCurrentItem="True"
+                    Grid.Row="1"
+                    CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name"></DataGridTextColumn>
+                <!--<DataGridTextColumn Binding="{Binding Structure}" Header="Structure"></DataGridTextColumn>-->
+                <DataGridTextColumn Binding="{Binding NumberOfCopies}" Header="# Copies"></DataGridTextColumn>
+                <DataGridTemplateColumn Header="Layers" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ListBox Margin="0" ItemsSource="{Binding Device.Layers}" ItemTemplateSelector="{StaticResource layerTemplateSelector}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0">Available device templates:</Label>
+            <Button 
+                Grid.Column="1" 
+                Width="200" 
+                HorizontalAlignment="Center"
+                Content="Add Selected Template" 
+                Background="CornflowerBlue"  
+                Command="{Binding AddSelectedTemplate}">
+            </Button>
+            <Button 
+                Grid.Column="2" 
+                Width="200" 
+                HorizontalAlignment="Right"
+                Content="Create New Device Template" 
+                Background="OrangeRed"  
+                Command="{Binding BuildNewDeviceTemplate}">
+            </Button>
+        </Grid>
+        <DataGrid   ItemsSource="{Binding DeviceTemplates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    AutoGenerateColumns="False" 
+                    SelectedItem="{Binding SelectedDeviceTemplate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,FallbackValue=Nothing}" 
+                    SelectionMode="Single"
+                    IsSynchronizedWithCurrentItem="True"
+                    Grid.Row="4"
+                    CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name"></DataGridTextColumn>
+                <!--<DataGridTextColumn Binding="{Binding Structure}" Header="Structure"></DataGridTextColumn>-->
+                <DataGridTemplateColumn Header="Layers" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ListBox Margin="0" ItemsSource="{Binding Device.Layers}" ItemTemplateSelector="{StaticResource layerTemplateSelector}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</UserControl>

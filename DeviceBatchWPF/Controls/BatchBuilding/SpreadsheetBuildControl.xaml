@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="DeviceBatchWPF.Controls.BatchBuilding.SpreadsheetBuildControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DeviceBatchWPF.Controls.BatchBuilding"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBox VerticalAlignment="Center" HorizontalAlignment="Left" Width="250" TextWrapping="WrapWithOverflow" Text="{Binding DeviceBatchToAdd.SpreadSheetPath, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"></TextBox>
+                <Button VerticalAlignment="Center" HorizontalAlignment="Left" Width="250" Command="{Binding SelectSpreadSheet}" Background="SteelBlue">Select Spreadsheet</Button>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <Label FontWeight="Bold">Fabrication Date</Label>
+                <DatePicker SelectedDate="{Binding DeviceBatchToAdd.FabDate,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <Button VerticalAlignment="Center" HorizontalAlignment="Left" Width="250" Command="{Binding SaveDeviceBatchFromSpreadsheet}" Background="OrangeRed">Save Device Batch</Button>
+
+            </StackPanel>
+        </Grid>
+        <DataGrid 
+            ItemsSource="{Binding DeviceBatchToAdd.Devices,UpdateSourceTrigger=PropertyChanged}"
+            Grid.Row="1">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Index" Width="Auto" SortMemberPath="BatchIndex" SortDirection="Descending">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding BatchIndex}"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Layers" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:Name="deviceLayersTemplate">
+                            <ListView Margin="0" ItemsSource="{Binding Layers,UpdateSourceTrigger=PropertyChanged}">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal" IsItemsHost="True"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListViewItem}">
+                                        <Setter Property="BorderBrush" Value="LightGray"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBox 
+                                            MaxWidth="77"
+                                            TextWrapping="Wrap"
+                                            Text="{Binding SpreadSheetCellText,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                            />
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Data Label" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Label, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+
+</UserControl>

@@ -1,0 +1,167 @@
+﻿<UserControl x:Class="DeviceBatchWPF.Controls.MaterialsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DeviceBatchWPF.Controls"
+             xmlns:db="clr-namespace:DeviceBatchGenerics.Support;assembly=DeviceBatchGenerics"
+             mc:Ignorable="d"              
+             >
+    <UserControl.Resources>
+        <db:LayerTemplateSelector x:Key="layerTemplateSelector" 
+                                     DefaultDataTemplate="{StaticResource DefaultDataTemplate}" 
+                                     PatternedTCODataTemplate="{StaticResource EditPTCOTemplate}"  
+                                     SpinCoatedLayerDataTemplate="{StaticResource EditSpincoatedTemplate}" 
+                                     ThermallyEvaporatedLayerDataTemplate="{StaticResource EditThermallyEvaporatedTemplate}" 
+                                     EncapsulationDataTemplate="{StaticResource EditEncapsulationTemplate}"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Background="LightGray">
+            <Separator></Separator>
+            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                <Label>Material Name:</Label>
+                <TextBox MinWidth="100"  Text="{Binding MaterialToAdd.Name}"></TextBox>
+                <Label>Supplier:</Label>
+                <TextBox MinWidth="100" Text="{Binding MaterialToAdd.Supplier}"></TextBox>
+                <Label>Lot#:</Label>
+                <TextBox MinWidth="100" Text="{Binding MaterialToAdd.LotNumber}"></TextBox>
+                <Label>Part#:</Label>
+                <TextBox MinWidth="100" Text="{Binding MaterialToAdd.PartNumber}"></TextBox>
+            </WrapPanel>
+
+            <Separator></Separator>
+            <WrapPanel HorizontalAlignment="Center">
+                <Label>Date Received/Synthesized:</Label>
+                <DatePicker SelectedDate="{Binding MaterialToAdd.DateReceivedOrSynthesized}"></DatePicker>
+                <Label>Expiration Date:</Label>
+                <DatePicker SelectedDate="{Binding MaterialToAdd.ExpirationDate}"></DatePicker>
+            </WrapPanel>
+            <Separator></Separator>
+            <WrapPanel HorizontalAlignment="Center">
+                <StackPanel >
+                    <Label>Physical Role:</Label>
+                    <ComboBox 
+                        ItemsSource="{Binding PhysicalRolesDict}" 
+                        SelectedValuePath="Value" DisplayMemberPath="Key" 
+                        SelectedValue="{Binding SelectedRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                </StackPanel>
+                <StackPanel>
+                    <Label>Deposition Method:</Label>
+                    <ComboBox ItemsSource="{Binding DepositionMethodsDict}" SelectedValuePath="Value" DisplayMemberPath="Key" SelectedValue="{Binding SelectedMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                </StackPanel>
+                <ContentControl Content="{Binding LayerTemplateToAdd.Layer, UpdateSourceTrigger=PropertyChanged}" ContentTemplateSelector="{StaticResource layerTemplateSelector}"/>
+            </WrapPanel>
+            <Button Width="200" Background="OrangeRed" Content="Add Material" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.AddMaterial}"></Button>
+            <Separator></Separator>
+            <Button Width="200" Background="OrangeRed" Content="Save Edits" Command="{Binding SaveEdits}"></Button>
+        </StackPanel>
+        <DataGrid
+            ItemsSource="{Binding MaterialsView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            KeyboardNavigation.TabNavigation="Cycle"
+            ScrollViewer.CanContentScroll="True"
+            MaxHeight="444"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            CanUserSortColumns="True"
+            SelectionMode="Single"
+            Grid.Row="1"
+            >
+            <DataGrid.Columns>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
+                                Content="Create Solution" 
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CreateSolution}" 
+                                CommandParameter="{Binding}"
+                                Background="CornflowerBlue"
+                                />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Material Name" SortMemberPath="Name" CanUserSort="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Supplier" SortMemberPath="Supplier" CanUserSort="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox MinWidth="42" Text="{Binding Supplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Lot #" SortMemberPath="LotNumber" CanUserSort="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox MinWidth="42" Text="{Binding LotNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Date Received/Synthesized" SortMemberPath="DateReceivedOrSynthesized" CanUserSort="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding DateReceivedOrSynthesized, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="LayerTemplate">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Expander IsExpanded="False" >
+                                <ContentControl Content="{Binding LayerTemplate.Layer}" ContentTemplateSelector="{StaticResource layerTemplateSelector}"/>
+                            </Expander>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Details">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Expander IsExpanded="False" >
+                                <StackPanel>
+                                    <WrapPanel>
+                                        <Label>Part#:</Label>
+                                        <TextBox MinWidth="100" Text="{Binding PartNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                    </WrapPanel>
+                                    <WrapPanel>
+                                        <Label>Expiration Date:</Label>
+                                        <DatePicker SelectedDate="{Binding ExpirationDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                                    </WrapPanel>
+                                    <WrapPanel>
+                                        <Label>Physical Role:</Label>
+                                        <ComboBox 
+                                            ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.PhysicalRolesDict}" 
+                                            SelectedValuePath="Value" DisplayMemberPath="Key" 
+                                            SelectedValue="{Binding PhysicalRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                                    </WrapPanel>
+                                    <WrapPanel>
+                                        <Label>Deposition Method:</Label>
+                                        <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DepositionMethodsDict}" SelectedValuePath="Value" DisplayMemberPath="Key" SelectedValue="{Binding DepositionMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Expander>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
+                                Content="Delete" 
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteMaterial}" 
+                                CommandParameter="{Binding}"
+                                Background="OrangeRed"
+                                />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

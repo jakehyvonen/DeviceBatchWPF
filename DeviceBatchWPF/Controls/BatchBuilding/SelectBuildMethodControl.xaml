@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="DeviceBatchWPF.Controls.BatchBuilding.SelectBuildMethodControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DeviceBatchWPF.Controls.BatchBuilding"
+             mc:Ignorable="d" 
+            >
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Label>Who made this batch?</Label>
+        <DataGrid   ItemsSource="{Binding VisibleEmployees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ScrollViewer.CanContentScroll="True"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    Width="Auto"
+                    AutoGenerateColumns="False"
+                    SelectedItem ="{Binding SelectedEmployee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    IsSynchronizedWithCurrentItem="True"
+                    CanUserAddRows="False"
+                    SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding FirstName}" Header="First" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LastName}" Header="Last" Width="Auto"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Grid.Row="5" Width="200" Content="Assign Selected Employee" Background="CornflowerBlue"  Command="{Binding AssignSelectedEmployee}"></Button>
+        <Label HorizontalAlignment="Center" Margin="10">Please choose:</Label>
+        <WrapPanel HorizontalAlignment="Center">
+            <Button
+                Margin="10"
+                Background="CornflowerBlue"
+                
+                Command="{Binding ChooseToBuildFromSpreadsheet}"
+                Content="Next"
+                />
+            <!--
+            <Button
+                Margin="10"
+                Background="CornflowerBlue"
+                Command="{Binding ChooseToBuildBatchFromTemplates}"
+                Content="Build from &#10;DeviceTemplates"
+                />
+            <Button
+                Margin="10"
+                Background="CornflowerBlue"
+                Command="{Binding ChooseToBuildBatchFromPrevious}"
+                Content="Build from previous&#10;DeviceBatch"
+                />
+            -->
+        </WrapPanel>
+    </StackPanel>
+
+</UserControl>

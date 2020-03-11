@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="DeviceBatchWPF.Controls.BatchBuilding.AssignMaterialsAndLayerPropertiesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:db="clr-namespace:DeviceBatchGenerics.Support;assembly=DeviceBatchGenerics"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <!-- this control is for assigning materials and solutions to devices -->
+    <UserControl.Resources>
+        <db:LayerTemplateSelector x:Key="templateSelector" 
+                                            DefaultDataTemplate="{StaticResource DefaultDataTemplate}" 
+                                            PatternedTCODataTemplate="{StaticResource EditPTCOTemplate}" 
+                                            SpinCoatedLayerDataTemplate="{StaticResource EditSpincoatedTemplate}" 
+                                            ThermallyEvaporatedLayerDataTemplate="{StaticResource EditThermallyEvaporatedTemplate}" 
+                                            EncapsulationDataTemplate="{StaticResource EditEncapsulationTemplate}"/>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <WrapPanel Grid.Row="0" HorizontalAlignment="Center">
+            <StackPanel>
+                <Button  Content="Edit Materials Lists" Background="OrangeRed"  Command="{Binding GoBackToBatchMaterialsSelect}"></Button>
+                <Separator></Separator>
+                <Button  Content="Add More Devices" Background="OrangeRed"  Command="{Binding GoBackToDevTemplatesSelect}"></Button>
+            </StackPanel>
+            <StackPanel>
+                <WrapPanel HorizontalAlignment="Center">
+                    <Button FontFamily="Marlett" FontSize="26" Content="3" Command="{Binding GoToPreviousLayerTemplate}"></Button>
+                    <ContentControl Content="{Binding SelectedLayerTemplate.Layer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ContentTemplateSelector="{StaticResource templateSelector}"/>
+                    <Button FontFamily="Marlett" FontSize="26" Content="4" Command="{Binding GoToNextLayerTemplate}"></Button>
+                </WrapPanel>
+                <Button Margin="10" Width="233" Content="Duplicate properties for selected layer" Background="CornflowerBlue"  Command="{Binding CopyLayerPropertiesForSelectedTemplate}"></Button>
+            </StackPanel>
+            <Button  Content="Update Batch" Background="RosyBrown"  Command="{Binding UpdateDeviceBatchToAddCommand}"></Button>
+            <Button  Width="200" Content="Save Device Batch" Background="OrangeRed"  Command="{Binding SaveAndCommitDeviceBatch}"></Button>
+        </WrapPanel>
+        <DataGrid ScrollViewer.CanContentScroll="True" Grid.Row="1" Margin="2"                
+                  ItemsSource="{Binding DeviceViewSource.View, UpdateSourceTrigger=PropertyChanged}"
+                  ScrollViewer.VerticalScrollBarVisibility="Visible"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserSortColumns="True"
+                  SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Button FontFamily="Marlett" FontSize="23" Content="5" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveSelectedDeviceUpOneRow}" CommandParameter="{Binding}"></Button>
+                                <Button FontFamily="Marlett" FontSize="23" Content="6" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveSelectedDeviceDownOneRow}" CommandParameter="{Binding}"></Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="BatchIndex" Width="Auto" SortMemberPath="BatchIndex">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding BatchIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Layers" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:Name="deviceLayersTemplate">
+                            <ListView 
+                                        KeyboardNavigation.TabNavigation="Cycle" 
+                                        SelectionMode="Single"
+                                        ItemsSource="{Binding Layers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        ItemTemplateSelector="{StaticResource templateSelector}">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                            </ListView>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Label" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Label, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Comment" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox TextWrapping="Wrap" Height="Auto" MinWidth="111" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
+                                Content="Duplicate" 
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DuplicateDevice}" 
+                                CommandParameter="{Binding}"
+                                Background="CornflowerBlue"
+                                />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
+                                Content="Delete" 
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteDevice}" 
+                                CommandParameter="{Binding}"
+                                Background="OrangeRed"
+                                />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

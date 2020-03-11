@@ -1,0 +1,191 @@
+﻿<UserControl x:Class="DeviceBatchWPF.Controls.BatchBuilding.BatchMaterialsSelectControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DeviceBatchWPF.Controls.BatchBuilding"
+             mc:Ignorable="d" 
+             >
+    <!--allows user to select and edit the materials that are assigned to devices in deviceBatch -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="WhiteSmoke">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <WrapPanel Grid.Column="0">
+                <Label FontWeight="Bold">Fabrication Date:</Label>
+                <DatePicker SelectedDate="{Binding DeviceBatchToAdd.FabDate}"></DatePicker>
+            </WrapPanel>
+            <Button 
+                Grid.Column="3"               
+                HorizontalAlignment="Right"
+                Width="200" 
+                Content="Assign Materials/Solutions to devices" 
+                Background="OrangeRed"  
+                Command="{Binding GoToAssignMaterialsAndProperties}">
+            </Button>
+        </Grid>
+        <Separator Grid.Row="1" Height="33"></Separator>
+        <Grid
+            Background="WhiteSmoke"
+            Grid.Row="2"            
+            >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontWeight="Bold">Solution-processible Materials In This Batch</Label>
+                <Button 
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Content="Remove Selected Solution" 
+                    Background="CornflowerBlue"  
+                    Command="{Binding DeleteSelectedSolution}">
+                </Button>
+            </Grid>
+            <DataGrid 
+                      Grid.Row="1"
+                      Grid.Column="0"      
+                      ItemsSource="{Binding SolutionsToAdd, UpdateSourceTrigger=PropertyChanged}"
+                      AutoGenerateColumns="False"
+                      SelectedItem ="{Binding SelectedSolution}"
+                      SelectionMode="Single"                      
+                      CanUserAddRows="False"
+                      >
+                <DataGrid.InputBindings>
+                    <KeyBinding Key="Space" Command="{Binding AddSelectedSolution}"></KeyBinding>
+                </DataGrid.InputBindings>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Label}" Header="Label"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Concentration}" Header="Concentration&#x0a;(mg/mL)"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding DatePreparedOrPurified, StringFormat=MM/dd/yy}" Header="Date Prepared"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Solvent}" Header="Solvent"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid
+                Grid.Row="0"
+                Grid.Column="1"
+                >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontWeight="Bold">Other Materials In This Batch</Label>
+                <Button 
+                    Grid.Column="1" 
+                    Width="200" 
+                    HorizontalAlignment="Right"
+                    Content="Remove Selected Material" 
+                    Background="CornflowerBlue"  
+                    Command="{Binding DeleteSelectedMaterial}">
+                </Button>
+            </Grid>
+            <DataGrid Grid.Row="1" 
+                      Grid.Column="1"
+                      ItemsSource="{Binding MaterialsToAdd, UpdateSourceTrigger=PropertyChanged}"
+                      AutoGenerateColumns="False"
+                      SelectedItem ="{Binding SelectedMaterial}"
+                      SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name"></DataGridTextColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <StackPanel Grid.Row="3">
+            <Label>Filter by role:</Label>
+            <ComboBox
+                    BorderBrush="CornflowerBlue"
+                    DisplayMemberPath="LongName"
+                ItemsSource="{Binding PhysicalRolesCollection, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding SelectedRole, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                />
+        </StackPanel>
+        <Grid
+            Grid.Row="4"
+            >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label FontWeight="Bold" Grid.Column="0">Available Solution-processible Materials</Label>
+                <Button Grid.Column="1" HorizontalAlignment="Right" Width="200" Content="Add Selected Solution" Background="CornflowerBlue"  Command="{Binding AddSelectedSolution}"></Button>
+            </Grid>
+            <DataGrid   
+                Grid.Row="1"
+                Grid.Column="0"
+                MaxHeight="333"
+                ItemsSource="{Binding SolutionsView, UpdateSourceTrigger=PropertyChanged}"
+                ScrollViewer.CanContentScroll="True"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                AutoGenerateColumns="False"
+                SelectedItem ="{Binding SelectedSolution}"
+                CanUserAddRows="False"
+                SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Material.Name}" Header="Material"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Label}" Header="Label"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Concentration}" Header="Concentration&#x0a;(mg/mL)"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding DatePreparedOrPurified, StringFormat=MM/dd/yy}" Header="Date Prepared"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Solvent}" Header="Solvent"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label FontWeight="Bold" Grid.Column="0">Other Available Materials</Label>
+                <Button 
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Width="200" 
+                    Content="Add Selected Material" 
+                    Background="CornflowerBlue"  
+                    Command="{Binding AddSelectedMaterial}">
+                </Button>
+            </Grid>
+            <DataGrid 
+                Grid.Row="1"
+                Grid.Column="1"
+                MaxHeight="333"
+                ItemsSource="{Binding MaterialsView, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False"
+                    SelectedItem ="{Binding SelectedMaterial}"
+                    SelectionMode="Single"
+                    >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name"></DataGridTextColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

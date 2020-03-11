@@ -1,0 +1,161 @@
+﻿<UserControl x:Class="DeviceBatchWPF.Controls.DevBatchVizControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:db="clr-namespace:DeviceBatchGenerics.Support;assembly=DeviceBatchGenerics"
+             mc:Ignorable="d" 
+             d:SizeToContent="WidthAndHeight">
+    <UserControl.Resources>
+        <db:LEDDataTemplateSelector x:Key="LEDDataTemplateSelector" 
+                                       DefaultDataTemplate="{StaticResource DefaultDataTemplate}" 
+                                       LJVScanDataTemplate="{StaticResource LJVScanDataTemplate}" 
+                                       ELSpectrasDataTemplate="{StaticResource ELSpectrasDataTemplate}"
+                                       LJVScanSummaryVMDataTemplate="{StaticResource LJVScanSummaryVMDataTemplate}"
+                                       LifetimesDataTemplate="{StaticResource LifetimesDataTemplate}"
+                                       />
+        <db:LayerTemplateSelector x:Key="layerTemplateSelector" 
+                                     DefaultDataTemplate="{StaticResource DefaultDataTemplate}" 
+                                     UnknownDataTemplate="{StaticResource UnknownDataTemplate}" 
+                                     PatternedTCODataTemplate="{StaticResource PatternedTCODataTemplate}"  
+                                     SpinCoatedLayerDataTemplate="{StaticResource SpinCoatedLayerDataTemplate}" 
+                                     ThermallyEvaporatedLayerDataTemplate="{StaticResource ThermallyEvaporatedLayerDataTemplate}" 
+                                     EncapsulationDataTemplate="{StaticResource EncapsulationDataTemplate}"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="Data">
+                <MenuItem Header="Add LJV Data To Batch" Command="{Binding AddDataToDeviceBatch}"/>
+                <MenuItem Header="Update Spreadsheets" Command="{Binding UpdateSpreadsheets}"/>
+                <MenuItem Header="Update Plot Images" Command="{Binding UpdatePlotBitmaps}"/>
+                <MenuItem Header="Remove All LJV Data" Command="{Binding DeleteAllBatchData}"/>
+                <MenuItem Header="Add Lifetime Data to Selected Device" Command="{Binding OpenAssignLifetimeDataToPixelWindow}"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Edit Test Schedule" Command="{Binding OpenEquipmentSchedulingWindow}"/>
+                <MenuItem Header="Edit Device Layer Materials/Conditions" Command="{Binding SwitchToDevBatchBuilder}"/>
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Grid.Row="1">
+            <!--
+            <WrapPanel>
+                <Button Width="200"
+                        Margin="10"
+                        Content="Remove All LJV Data From Batch" 
+                        HorizontalAlignment="Left"
+                        Background="LightSalmon"  Command="{Binding DeleteAllBatchData}"></Button>
+                <Button Width="200"
+                        Margin="10"
+                        Content="Add LJV Data To Batch" 
+                        HorizontalAlignment="Left"
+                        Background="CornflowerBlue"  Command="{Binding AddDataToDeviceBatch}"></Button>
+                <Button Width="200"
+                        Margin="10"
+                        Content="Add Lifetime Data To Selected Device" 
+                        HorizontalAlignment="Left"
+                        Background="CornflowerBlue"  Command="{Binding OpenAssignLifetimeDataToPixelWindow}"></Button>
+                <Button Width="200"
+                        Margin="10"
+                        Content="Update Spreadsheets" 
+                        HorizontalAlignment="Left"
+                        Background="CornflowerBlue"  Command="{Binding UpdateSpreadsheets}"></Button>
+            </WrapPanel>
+            -->
+            <WrapPanel>
+                <Label VerticalAlignment="Center">Batch Name:</Label>
+                <TextBlock FontWeight="Bold" VerticalAlignment="Center"  Text="{Binding TheDeviceBatch.Name}"></TextBlock>
+                <Label VerticalAlignment="Center">Fabrication Date:</Label>
+                <TextBlock FontWeight="Bold" IsEnabled="False" VerticalAlignment="Center" Text="{Binding TheDeviceBatch.FabDate}"></TextBlock>
+
+            </WrapPanel>
+        </StackPanel>
+        <DataGrid 
+            Grid.Row="2"
+            Margin="2" 
+            ItemsSource="{Binding DeviceVMCollection, UpdateSourceTrigger=PropertyChanged}"
+            SelectedItem="{Binding SelectedDeviceVM, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+            ScrollViewer.VerticalScrollBarVisibility="Visible"
+            ScrollViewer.CanContentScroll="False"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            CanUserSortColumns="True"
+            SelectionMode="Single"
+            >
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Index" Width="Auto" SortMemberPath="BatchIndex" SortDirection="Descending">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding TheDevice.BatchIndex}"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Structure" Width="Auto" SortMemberPath="Label" SortDirection="Descending">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding MaterialStructure}"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Layers" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:Name="deviceLayersTemplate">
+                            <Expander IsExpanded="False" ExpandDirection="Right">
+                                <ListBox Margin="0" ItemsSource="{Binding TheDevice.Layers}" ItemTemplateSelector="{StaticResource layerTemplateSelector}">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel IsItemsHost="True"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                            </Expander>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="LJV Scans" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ListBox ItemsSource="{Binding ScanSummaryVMCollection,UpdateSourceTrigger=PropertyChanged}" ItemTemplateSelector="{StaticResource LEDDataTemplateSelector}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Lifetimes" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ListBox ItemsSource="{Binding LifetimeVMCollection,UpdateSourceTrigger=PropertyChanged}" ItemTemplateSelector="{StaticResource LEDDataTemplateSelector}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
+                                    Content="View Data" 
+                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.OpenDeviceViewWindow}" 
+                                    CommandParameter="{Binding}"
+                                    Background="CornflowerBlue"
+                                    />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
