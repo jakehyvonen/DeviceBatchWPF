@@ -1,0 +1,788 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Converters="clr-namespace:DeviceBatchWPF.Scheduling.Converters"
+                    xmlns:Jarloo="clr-namespace:DeviceBatchWPF.Scheduling"
+                    >
+    <DataTemplate x:Key="DefaultDataTemplate">
+        <Label>DepositionMethod not assigned</Label>
+    </DataTemplate>
+    <DataTemplate x:Key="UnknownDataTemplate">
+        <StackPanel>
+            <Label>Unmapped Layer</Label>
+            <TextBox 
+                MaxWidth="77"
+                TextWrapping="Wrap"
+                Text="{Binding SpreadSheetCellText}">
+
+            </TextBox>
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="LifetimesDataTemplate">
+        <Border Background="SkyBlue" BorderBrush="DarkGray" BorderThickness="1">
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Text="{Binding Label,UpdateSourceTrigger=PropertyChanged}" FontWeight="DemiBold" HorizontalAlignment="Center"/>
+                <WrapPanel>
+                    <TextBlock Text="Initial cd/m&#x00B2;: "></TextBlock>
+                    <TextBlock Text="{Binding TheLifetime.InitialLuminance,UpdateSourceTrigger=PropertyChanged}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="Set mA/cm&#x00B2;: "></TextBlock>
+                    <TextBlock Text="{Binding TheLifetime.SetCurrentDensity,UpdateSourceTrigger=PropertyChanged}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="Initial cd/A: "></TextBlock>
+                    <TextBlock Text="{Binding TheLifetime.InitialCE,UpdateSourceTrigger=PropertyChanged}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="T90 (hrs): "></TextBlock>
+                    <TextBlock Text="{Binding TheLifetime.TimeUntil90Percent,UpdateSourceTrigger=PropertyChanged}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="T50 (hrs): "></TextBlock>
+                    <TextBlock Text="{Binding TheLifetime.TimeUntil50Percent,UpdateSourceTrigger=PropertyChanged}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="Total hrs: "></TextBlock>
+                    <TextBlock Text="{Binding TheLifetime.TotalHoursElapsed,UpdateSourceTrigger=PropertyChanged}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="Days aged: "></TextBlock>
+                    <TextBlock Text="{Binding DaysBetweenDeviceFabAndLifetimeTest,UpdateSourceTrigger=PropertyChanged}"/>
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="LJVScanDataTemplate">
+
+    </DataTemplate>
+    <DataTemplate x:Key="ELSpectrasDataTemplate">
+
+    </DataTemplate>
+    <DataTemplate x:Key="LJVScanSummaryVMDataTemplate">
+        <DataTemplate.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            </Style>
+        </DataTemplate.Resources>
+        <Border Background="LightGray" BorderBrush="DarkGray" BorderThickness="1">
+            <StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="13" Text="{Binding TheLJVScanSummary.Device.Label}" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="13" Text="{Binding TheLJVScanSummary.TestCondition}" HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid ShowGridLines="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" Grid.Row="0">__Mean__</TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="0">__Min__</TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="0">__Max__</TextBlock>
+                    <TextBlock Grid.Column="4" Grid.Row="0">__Std Dev.__</TextBlock>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1">PeakEQE</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="2">Peak λ</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="3">FWHM</TextBlock>
+
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding PeakEQE.Mean}"></TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding PeakEQE.Min}"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding PeakEQE.Max}"></TextBlock>
+                    <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding PeakEQE.StdDev}"></TextBlock>
+
+                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding PeakLambda.Mean}"></TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding PeakLambda.Min}"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding PeakLambda.Max}"></TextBlock>
+                    <TextBlock Grid.Column="4" Grid.Row="2" Text="{Binding PeakLambda.StdDev}"></TextBlock>
+
+                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding FWHM.Mean}"></TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="3" Text="{Binding FWHM.Min}"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding FWHM.Max}"></TextBlock>
+                    <TextBlock Grid.Column="4" Grid.Row="3" Text="{Binding FWHM.StdDev}"></TextBlock>
+
+                </Grid>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DetailedLJVScanSummaryVMDataTemplate">
+        <DataTemplate.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            </Style>
+        </DataTemplate.Resources>
+        <Border Background="LightGreen" BorderBrush="DarkGray" BorderThickness="1">
+            <StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="13" Text="{Binding TheLJVScanSummary.Device.Label}" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="13" Text="{Binding TheLJVScanSummary.TestCondition}" HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid ShowGridLines="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" Grid.Row="0">__Mean__</TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="0">__Min__</TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="0">__Max__</TextBlock>
+                    <TextBlock Grid.Column="4" Grid.Row="0">__Std Dev.__</TextBlock>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1">PeakEQE</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="2">EQEat1k</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="3">Peak λ</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="4">EL FWHM</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="5">CIEx</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="6">CIEy</TextBlock>
+
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding PeakEQE.Mean}"></TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding PeakEQE.Min}"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding PeakEQE.Max}"></TextBlock>
+                    <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding PeakEQE.StdDev}"></TextBlock>
+
+                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding EQEat1k.Mean}"></TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding EQEat1k.Min}"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding EQEat1k.Max}"></TextBlock>
+                    <TextBlock Grid.Column="4" Grid.Row="2" Text="{Binding EQEat1k.StdDev}"></TextBlock>
+
+                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding PeakLambda.Mean}"></TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="3" Text="{Binding PeakLambda.Min}"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding PeakLambda.Max}"></TextBlock>
+                    <TextBlock Grid.Column="4" Grid.Row="3" Text="{Binding PeakLambda.StdDev}"></TextBlock>
+
+                    <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding FWHM.Mean}"></TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="4" Text="{Binding FWHM.Min}"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="4" Text="{Binding FWHM.Max}"></TextBlock>
+                    <TextBlock Grid.Column="4" Grid.Row="4" Text="{Binding FWHM.StdDev}"></TextBlock>
+
+                    <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding CIEx.Mean}"></TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding CIEx.Min}"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="5" Text="{Binding CIEx.Max}"></TextBlock>
+                    <TextBlock Grid.Column="4" Grid.Row="5" Text="{Binding CIEx.StdDev}"></TextBlock>
+
+                    <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding CIEy.Mean}"></TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="6" Text="{Binding CIEy.Min}"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="6" Text="{Binding CIEy.Max}"></TextBlock>
+                    <TextBlock Grid.Column="4" Grid.Row="6" Text="{Binding CIEy.StdDev}"></TextBlock>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="PatternedTCODataTemplate">
+        <DataTemplate.Resources>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="MinWidth" Value="10"></Setter>
+                <Setter Property="TextAlignment" Value="Center"></Setter>
+                <Setter Property="IsEnabled" Value="{Binding EditingEnabled}"/>
+            </Style>
+        </DataTemplate.Resources>
+        <Border Background="LightGoldenrodYellow" BorderBrush="DarkGray" BorderThickness="1">
+            <StackPanel VerticalAlignment="Top">
+                <TextBlock HorizontalAlignment="Center" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox FontWeight="Bold" Text="{Binding Material.Supplier}" VerticalAlignment="Center"  HorizontalAlignment="Right"></TextBox>
+                    <TextBlock></TextBlock>
+                    <TextBox FontWeight="Bold" Text="{Binding Material.Name}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                </StackPanel>
+                <Expander Header="Details">
+                    <StackPanel>
+                        <WrapPanel>
+                            <TextBlock VerticalAlignment="Center" Margin="1"  Text="Sheet Res. (Ω/□): " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Text="{Binding SheetResistance}" VerticalAlignment="Center"  HorizontalAlignment="Right"></TextBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock VerticalAlignment="Center" Margin="1"  Text="Thickness (nm): " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Text="{Binding Thickness}" VerticalAlignment="Center"  HorizontalAlignment="Right"></TextBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock VerticalAlignment="Center" Margin="1"  Text="Comment: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Text="{Binding Comment}" VerticalAlignment="Center"  HorizontalAlignment="Right" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+                        </WrapPanel>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="SpinCoatedLayerDataTemplate">
+        <DataTemplate.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+
+            </Style>
+        </DataTemplate.Resources>
+        <Border Background="LightBlue" BorderBrush="DarkGray" BorderThickness="1">
+            <WrapPanel Orientation="Vertical">
+                <TextBlock HorizontalAlignment="Center" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="{Binding Solution.Material.Name}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text=" in " HorizontalAlignment="Left"></TextBlock>
+                    <TextBlock FontWeight="Bold" Text="{Binding Solution.Solvent}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="{Binding Solution.Concentration}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text=" mg/mL, " HorizontalAlignment="Left"></TextBlock>
+                    <TextBlock FontWeight="Bold" Text="{Binding RPM}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text=" RPM, " HorizontalAlignment="Left"></TextBlock>
+                    <TextBlock FontWeight="Bold" Text="{Binding SpinCoatDuration}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text="s" HorizontalAlignment="Left"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="{Binding AnnealTemp}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text="C, " HorizontalAlignment="Left"></TextBlock>
+                    <TextBlock FontWeight="Bold" Grid.Column="1" Text="{Binding AnnealDuration}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text="m bake" HorizontalAlignment="Left"></TextBlock>
+
+                </StackPanel>
+
+                <Expander Header="Details">
+                    <WrapPanel Orientation="Vertical" VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="Comment: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Comment}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="Prep Date: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Text="{Binding Material.DateReceivedOrSynthesized, StringFormat=dd-MM-yyyy}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                    </WrapPanel>
+                </Expander>
+            </WrapPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="ThermallyEvaporatedLayerDataTemplate">
+        <DataTemplate.Resources>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="MinWidth" Value="10"></Setter>
+                <Setter Property="TextAlignment" Value="Center"></Setter>
+
+            </Style>
+        </DataTemplate.Resources>
+        <Border Background="LightSalmon" BorderBrush="DarkGray" BorderThickness="1">
+            <WrapPanel Orientation="Vertical">
+                <TextBlock HorizontalAlignment="Center" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="{Binding Material.Name}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="{Binding Thickness}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text=" nm" HorizontalAlignment="Left"></TextBlock>
+                </StackPanel>
+                <Expander Header="Details">
+                    <WrapPanel Orientation="Vertical">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Pattern: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Grid.Column="1" Text="{Binding Pattern}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Thickness: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Grid.Column="1" Text="{Binding Thickness}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Rate (Å/s): " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Grid.Column="1" Text="{Binding DepositionRate}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Pressure (mbar): " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Grid.Column="1" Text="{Binding BackPressure}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </Grid>
+                    </WrapPanel>
+                </Expander>
+            </WrapPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="EncapsulationDataTemplate">
+        <DataTemplate.Resources>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="MinWidth" Value="10"></Setter>
+                <Setter Property="TextAlignment" Value="Center"></Setter>
+
+            </Style>
+        </DataTemplate.Resources>
+        <Border Background="GhostWhite" BorderBrush="DarkGray" BorderThickness="1">
+            <WrapPanel Orientation="Vertical" VerticalAlignment="Top">
+                <TextBlock HorizontalAlignment="Center" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="{Binding Material.Name}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                </StackPanel>
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock  Text="Cure Time: " HorizontalAlignment="Left"></TextBlock>
+                    <TextBlock FontWeight="Bold" Text="{Binding CureTime}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock  Text="m" HorizontalAlignment="Left"></TextBlock>
+                </WrapPanel>
+                <Expander Header="Details">
+                    <WrapPanel>
+
+                        <WrapPanel Orientation="Horizontal">
+                            <TextBlock  Text="Cure Time (m): " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Text="{Binding CureTime}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </WrapPanel>
+                        <TextBlock Grid.Column="0" Text="Cure Style: " HorizontalAlignment="Left"></TextBlock>
+                        <TextBox Grid.Column="1" Text="{Binding CureStyle}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+
+                        <TextBlock Grid.Column="0" Text="Cure Time (m): " HorizontalAlignment="Left"></TextBlock>
+                        <TextBox Grid.Column="1" Text="{Binding CureTime}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+
+
+                        <TextBlock Grid.Column="0" Text="Environment: " HorizontalAlignment="Left"></TextBlock>
+                        <TextBox Grid.Column="1" Text="{Binding AmbientEnvironment}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+
+                        <TextBlock Grid.Column="0" Text="Cover Glass: " HorizontalAlignment="Left"></TextBlock>
+                        <TextBox Grid.Column="1" Text="{Binding CoverGlassStyle}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                    </WrapPanel>
+                </Expander>
+            </WrapPanel>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="EditPTCOTemplate">
+        <DataTemplate.Resources>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="MinWidth" Value="10"></Setter>
+                <Setter Property="TextAlignment" Value="Center"></Setter>
+            </Style>
+        </DataTemplate.Resources>
+        <Border Background="LightGoldenrodYellow" BorderBrush="DarkGray" BorderThickness="1">
+            <StackPanel VerticalAlignment="Top">
+                <TextBlock HorizontalAlignment="Center" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Grid.Column="1" Text="{Binding Material.Supplier, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"  HorizontalAlignment="Right"></TextBlock>
+                        <ComboBox
+                        ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},Path=DataContext.MaterialsToAdd}"
+                        SelectedItem="{Binding Material, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"    
+                        DisplayMemberPath="Name"
+                        MinWidth="33"                            
+                        >
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+                <Expander Header="Details">
+                    <StackPanel>
+                        <WrapPanel>
+                            <TextBlock VerticalAlignment="Center" Margin="1"  Text="Sheet Res. (Ω/□): " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Text="{Binding SheetResistance}" VerticalAlignment="Center"  HorizontalAlignment="Right"></TextBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock VerticalAlignment="Center" Margin="1"  Text="Thickness (nm): " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Text="{Binding Thickness}" VerticalAlignment="Center"  HorizontalAlignment="Right"></TextBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock VerticalAlignment="Center" Margin="1"  Text="Comment: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Text="{Binding Comment}" VerticalAlignment="Center"  HorizontalAlignment="Right" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+                        </WrapPanel>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="EditSpincoatedTemplate">
+        <DataTemplate.Resources>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="MinWidth" Value="10"></Setter>
+                <Setter Property="TextAlignment" Value="Center"></Setter>
+
+            </Style>
+        </DataTemplate.Resources>
+        <Border Background="LightBlue" BorderBrush="DarkGray" BorderThickness="1">
+            <WrapPanel Orientation="Vertical">
+                <TextBlock HorizontalAlignment="Center" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox
+                        ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},Path=DataContext.SolutionsToAdd}"
+                        SelectedItem="{Binding Solution, FallbackValue='TBA', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        MinWidth="33"
+                        DisplayMemberPath="Material.Name"
+                        >
+                    </ComboBox>
+                    <Button
+                        FontFamily="Marlett"
+                        FontSize="13"
+                        Content="r"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteLayer}" 
+                        CommandParameter="{Binding}"
+                        ></Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Solution.Concentration, FallbackValue='TBA'}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text=" mg/mL, " HorizontalAlignment="Left"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Solvent: " HorizontalAlignment="Left"></TextBlock>
+                    <TextBlock Text="{Binding Solution.Solvent, FallbackValue='TBA'}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="{Binding RPM}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                    <TextBlock VerticalAlignment="Center" Text="RPM, " HorizontalAlignment="Left"></TextBlock>
+                    <TextBox Text="{Binding SpinCoatDuration}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                    <TextBlock VerticalAlignment="Center" Text="s" HorizontalAlignment="Left"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="{Binding AnnealTemp}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                    <TextBlock VerticalAlignment="Center" Text="C, " HorizontalAlignment="Left"></TextBlock>
+                    <TextBox Grid.Column="1" Text="{Binding AnnealDuration}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                    <TextBlock VerticalAlignment="Center" Text="m bake" HorizontalAlignment="Left"></TextBlock>
+
+                </StackPanel>
+
+                <Expander Header="Details">
+                    <WrapPanel Orientation="Vertical" VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="Comment: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Comment}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="Prep Date: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Text="{Binding Material.DateReceivedOrSynthesized, StringFormat=dd-MM-yyyy}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                    </WrapPanel>
+                </Expander>
+            </WrapPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="EditThermallyEvaporatedTemplate">
+        <DataTemplate.Resources>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="MinWidth" Value="10"></Setter>
+                <Setter Property="TextAlignment" Value="Center"></Setter>
+
+            </Style>
+        </DataTemplate.Resources>
+        <Border Background="LightSalmon" BorderBrush="DarkGray" BorderThickness="1">
+            <WrapPanel Orientation="Vertical">
+                <TextBlock HorizontalAlignment="Center" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+                <TextBlock  Text="Material: " HorizontalAlignment="Left"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox
+                        ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},Path=DataContext.MaterialsToAdd}"
+                        DisplayMemberPath="Name"
+                        SelectedItem="{Binding Material, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                        
+                        MinWidth="33"
+                        >
+                    </ComboBox>
+                    <Button
+                        FontFamily="Marlett"
+                        FontSize="13"
+                        Content="r"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteLayer}" 
+                        CommandParameter="{Binding}"
+                        ></Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Thickness(nm): " HorizontalAlignment="Left"></TextBlock>
+                    <TextBox Text="{Binding Thickness}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                </StackPanel>
+                <Expander Header="Details">
+                    <WrapPanel Orientation="Vertical">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Pattern: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Grid.Column="1" Text="{Binding Pattern}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Thickness: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Grid.Column="1" Text="{Binding Thickness}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Rate (Å/s): " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Grid.Column="1" Text="{Binding DepositionRate}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Pressure (mbar): " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Grid.Column="1" Text="{Binding BackPressure}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </Grid>
+                    </WrapPanel>
+                </Expander>
+            </WrapPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="EditEncapsulationTemplate">
+        <DataTemplate.Resources>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="MinWidth" Value="10"></Setter>
+                <Setter Property="TextAlignment" Value="Center"></Setter>
+            </Style>
+        </DataTemplate.Resources>
+        <Border Background="GhostWhite" BorderBrush="DarkGray" BorderThickness="1">
+            <WrapPanel Orientation="Vertical" VerticalAlignment="Top">
+                <TextBlock HorizontalAlignment="Center" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+                <TextBlock  Text="Material: " HorizontalAlignment="Left"></TextBlock>
+
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox
+                        ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},Path=DataContext.MaterialsToAdd}"
+                        SelectedItem="{Binding Material, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        DisplayMemberPath="Name"
+                        MinWidth="33"
+                        >
+                    </ComboBox>
+                    <Button
+                        FontFamily="Marlett"
+                        FontSize="13"
+                        Content="r"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteLayer}" 
+                        CommandParameter="{Binding}"
+                        ></Button>
+                </StackPanel>
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock  Text="Cure Time (m): " HorizontalAlignment="Left"></TextBlock>
+                    <TextBox Text="{Binding CureTime}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                </WrapPanel>
+                <WrapPanel Orientation="Vertical">
+                    <TextBlock Text="Cure Condition: " HorizontalAlignment="Left"></TextBlock>
+                    <TextBox MinWidth="77" Text="{Binding CureCondition}" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
+                </WrapPanel>
+                <Expander Header="Details">
+                    <WrapPanel Orientation="Vertical">
+
+                        <WrapPanel Orientation="Horizontal">
+                            <TextBlock Grid.Column="0" Text="Environment: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox Grid.Column="1" Text="{Binding AmbientEnvironment}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </WrapPanel>
+                        <WrapPanel Orientation="Horizontal">
+                            <TextBlock Grid.Column="0" Text="Cover Glass: " HorizontalAlignment="Left"></TextBlock>
+                            <TextBox MinWidth="77" Text="{Binding CoverGlassStyle}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBox>
+                        </WrapPanel>
+                    </WrapPanel>
+                </Expander>
+            </WrapPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="ConcisePTCOTemplate">
+        <Border Background="LightGoldenrodYellow" BorderBrush="DarkGray" BorderThickness="1">
+            <StackPanel>
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Foreground="Black" Text="{Binding PhysicalRole.ShortName}"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Foreground="Black" Text="TCO Substrate"></TextBlock>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="ConciseSpincoatedTemplate">
+        <Border Background="LightBlue" BorderBrush="DarkGray" BorderThickness="1">
+            <StackPanel>
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Foreground="Black" Text="{Binding PhysicalRole.ShortName}"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Foreground="Black" Text="Spincoated"></TextBlock>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="ConciseThermallyEvaporatedTemplate">
+        <Border Background="LightSalmon" BorderBrush="DarkGray" BorderThickness="1">
+            <StackPanel>
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Foreground="Black" Text="{Binding PhysicalRole.ShortName}"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Foreground="Black" Text="Thermal Evap"></TextBlock>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="ConciseEncapsulationTemplate">
+        <Border Background="GhostWhite" BorderBrush="DarkGray" BorderThickness="1">
+            <StackPanel>
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Foreground="Black" Text="{Binding PhysicalRole.ShortName}"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Foreground="Crimson" Text="{Binding PhysicalRole.LongName}"></TextBlock>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+    <!--Jarloo Calendar stuff-->
+    <Converters:DateConverter x:Key="DateConverter"></Converters:DateConverter>
+    <Converters:DayBorderColorConverter x:Key="DayBorderColorConverter"></Converters:DayBorderColorConverter>
+    <Style TargetType="{x:Type Jarloo:Calendar}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Jarloo:Calendar}">
+                    <ControlTemplate.Resources>
+                        <Style x:Key="ScheduleLBStyle" TargetType="{x:Type ListBoxItem}">
+                            <Style.Resources>
+                                <SolidColorBrush 
+                                    x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                    Color="LightYellow"
+                                    ></SolidColorBrush>
+                            </Style.Resources>
+                        </Style>
+                    </ControlTemplate.Resources>
+
+                    <Border Background="White"
+                            BorderBrush="LightGray"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+
+                        <DockPanel>
+                            <TextBlock Text="{Binding Date}" />
+
+                            <Grid Height="30" DockPanel.Dock="Top">
+
+                            </Grid>
+
+                            <ItemsControl ItemsSource="{Binding DayNames}" DockPanel.Dock="Top">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextAlignment="Center" Text="{Binding}">
+                                            <TextBlock.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="White" Offset="0"/>
+                                                    <GradientStop Color="LightGray" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </TextBlock.Background>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="1" Columns="7" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+
+                            <ItemsControl ItemsSource="{Binding Days}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <!--Box-->
+                                        <Border BorderBrush="LightGray" BorderThickness="1" Padding="0">
+                                            <Border Name="InnerBorder" BorderBrush="{Binding Path=EquipmentTaskList, Converter={StaticResource DayBorderColorConverter}}" BorderThickness="2">
+                                                <Border.Style>
+                                                    <Style TargetType="{x:Type Border}">
+                                                        <Style.Triggers>
+                                                            <!--Current Day-->
+                                                            <DataTrigger Binding="{Binding IsToday}" Value="true">
+                                                                <Setter Property="Border.Background">
+                                                                    <Setter.Value>
+                                                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                            <GradientStop Color="LightGreen" Offset="0"/>
+                                                                            <GradientStop Color="LightGreen" Offset="1"/>
+                                                                            <!--
+                                                                            <GradientStop Color="#FF1EA6C8" Offset="0"/>
+                                                                            <GradientStop Color="#FF0691B3" Offset="1"/>
+                                                                            -->
+                                                                        </LinearGradientBrush>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <DockPanel>
+                                                    <!--Day Number-->
+                                                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" FlowDirection="RightToLeft">
+                                                        <TextBlock TextAlignment="Right" Text="{Binding Date, Converter={StaticResource DateConverter}, ConverterParameter=DAY}" FontSize="14" Margin="5,5,5,5" >
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="{x:Type TextBlock}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsTargetMonth}" Value="false">
+                                                                            <Setter Property="TextBlock.Foreground" Value="Gray"></Setter>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                    <ListBox
+                                                        IsEnabled="{Binding IsEnabled}"
+                                                        ItemsSource="{Binding EquipmentTaskList,UpdateSourceTrigger=PropertyChanged}"
+                                                        ItemContainerStyle="{StaticResource ScheduleLBStyle}"
+                                                        SelectedItem="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},Path=DataContext.SelectedTask,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                        BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                                        Background="{x:Null}" Foreground="Black"
+                                                        >
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <DataTemplate.Resources>
+
+                                                                </DataTemplate.Resources>
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <TextBlock Grid.Column="0" Text="{Binding DeviceBatch.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                                                    <!--
+                                                                    <Button
+                                                                        Grid.Column="1"
+                                                                        HorizontalAlignment="Right"
+                                                                        FontFamily="Marlett"
+                                                                        FontSize="13"
+                                                                        Content="r"
+                                                                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteTask}" 
+                                                                        CommandParameter="{Binding}"
+                                                                       ></Button>
+                                                                    -->
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                    <!--
+                                                    <TextBox IsEnabled="{Binding IsEnabled}" Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" TextWrapping="Wrap" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" Background="{x:Null}" Foreground="White" />
+                                                    -->
+                                                </DockPanel>
+                                            </Border>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="6" Columns="7" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

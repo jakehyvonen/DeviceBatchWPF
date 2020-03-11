@@ -1,0 +1,60 @@
+﻿<Window x:Class="DeviceBatchWPF.Scheduling.EquipmentSchedulingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeviceBatchWPF.Scheduling"
+        mc:Ignorable="d"
+     Title="EquipmentSchedulingWindow" MinHeight="777" MinWidth="666">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--dum
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <ComboBox        
+                    x:Name="cboMonth" 
+                    HorizontalAlignment="Center" 
+                    Height="34" Margin="8,8,0,0" 
+                    VerticalAlignment="Top" Width="152" 
+                    FontSize="18.667" 
+                    ItemsSource="{Binding Months, UpdateSourceTrigger=PropertyChanged}" 
+                    SelectedItem="{Binding SelectedMonth,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                />
+                <WrapPanel HorizontalAlignment="Center">
+                    <Button FontFamily="Marlett" FontSize="17" Content="3" Command="{Binding GoToPreviousMonth}"></Button>
+                    <TextBlock>Change Month</TextBlock>
+                    <Button FontFamily="Marlett" FontSize="17" Content="4" Command="{Binding GoToNextMonth}"></Button>
+                </WrapPanel>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" Grid.Column="1">
+                <TextBlock FontWeight="Bold">Edit Scheduled Test Date For Selection:</TextBlock>
+                <DatePicker SelectedDate="{Binding EditableTask.ScheduledDate,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                <Separator Height="17"></Separator>
+                <Button Background="OrangeRed"
+                        Command="{Binding SaveChanges}">
+                    Save Schedule Change
+                </Button>
+            </StackPanel>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Center" TextWrapping="Wrap" Width="222">
+                To add new tests, please navigate to the desired DeviceBatch and go to the "Edit" drop-down menu
+            </TextBlock>
+        </Grid>
+        -->
+        <ContentControl
+            Grid.Row="0"
+            Content="{Binding ActiveUserControl,UpdateSourceTrigger=PropertyChanged}"
+            />
+        <ContentControl
+            Grid.Row="1"
+            Content="{Binding JarlooCalendar,UpdateSourceTrigger=PropertyChanged}"
+            />
+    </Grid>
+</Window>

@@ -1,0 +1,65 @@
+﻿<Window x:Class="DeviceBatchWPF.Windows.DevTemplateBuilderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:db="clr-namespace:DeviceBatchGenerics.Support;assembly=DeviceBatchGenerics"
+        mc:Ignorable="d"
+        Title="DevTemplateBuilderWindow" SizeToContent="Height" MinWidth="777">
+    <Window.Resources>
+        <db:LayerTemplateSelector x:Key="templateSelector" 
+                                            DefaultDataTemplate="{StaticResource DefaultDataTemplate}" 
+                                            PatternedTCODataTemplate="{StaticResource PatternedTCODataTemplate}" 
+                                            SpinCoatedLayerDataTemplate="{StaticResource SpinCoatedLayerDataTemplate}" 
+                                            ThermallyEvaporatedLayerDataTemplate="{StaticResource ThermallyEvaporatedLayerDataTemplate}" 
+                                            EncapsulationDataTemplate="{StaticResource EncapsulationDataTemplate}"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <WrapPanel Grid.Row="0" Background="LightGray">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Template Name:</Label>
+                    <TextBox Text="{Binding NewDeviceTemplate.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <Label>Structure:</Label>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding NewDeviceTemplate.Structure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+            <WrapPanel Margin="10">
+                <StackPanel Margin="10">
+                    <Label>Next Layer Deposition Method:</Label>
+                    <ComboBox ItemsSource="{Binding DepositionMethodsDict}" SelectedValuePath="Value" DisplayMemberPath="Key" SelectedValue="{Binding SelectedDepositionMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                    <Label>And Physical Role:</Label>
+                    <ComboBox 
+                        ItemsSource="{Binding PhysicalRolesDict}" 
+                        SelectedValuePath="Value" DisplayMemberPath="Key" 
+                        SelectedValue="{Binding SelectedPhysicalRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </ComboBox>
+                </StackPanel>
+            </WrapPanel>
+            <Button Width="200" Height="42" Margin="10" FontSize="23" Content="Add Layer" Background="CornflowerBlue" Command="{Binding AddSelectedLayer}"></Button>
+            <Button Width="200" Height="42" Margin="10" FontSize="23" Content="Delete Last Layer" Background="CornflowerBlue" Command="{Binding DeleteLastLayer}"></Button>
+        </WrapPanel>
+        <ListView 
+            Grid.Row="1" 
+            ItemsSource="{Binding NewDeviceLayersCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+            ItemTemplateSelector="{StaticResource templateSelector}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" IsItemsHost="True"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+        <StackPanel HorizontalAlignment="Center" Orientation="Vertical" Grid.Row="2">
+            <TextBlock>All layer text fields should be left unfilled</TextBlock>
+            <Button FontSize="23" Content="Create Device Template" Background="OrangeRed" Command="{Binding AddNewDeviceTemplate}"></Button>
+        </StackPanel>
+
+    </Grid>
+</Window>

@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{42E9A56A-5B95-4B66-8051-1FA5E9564FCF}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <RootNamespace>DeviceBatchWPF</RootNamespace>
+    <AssemblyName>DeviceBatchWPF</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CsvHelper, Version=12.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.12.1.2\lib\net45\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="DeviceBatchGenerics">
+      <HintPath>..\..\DeviceBatchGenerics\DeviceBatchGenerics\bin\Debug\DeviceBatchGenerics.dll</HintPath>
+    </Reference>
+    <Reference Include="EFDeviceBatchCodeFirst">
+      <HintPath>..\..\EFDeviceBatchCodeFirst\EFDeviceBatchCodeFirst\bin\Debug\EFDeviceBatchCodeFirst.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.5.3.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.1\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.4.7.0\lib\net461\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.ConnectionUI">
+      <HintPath>..\..\..\SQLED\SQLED\packages\DataConnectionDialog.1.2\Lib\Microsoft.Data.ConnectionUI.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.ConnectionUI.Dialog">
+      <HintPath>..\..\..\SQLED\SQLED\packages\DataConnectionDialog.1.2\Lib\Microsoft.Data.ConnectionUI.Dialog.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
+      <HintPath>..\packages\OxyPlot.Core.1.0.0\lib\net45\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=75e952ba404cdbb0, processorArchitecture=MSIL">
+      <HintPath>..\packages\OxyPlot.Wpf.1.0.0\lib\net45\OxyPlot.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\BatchBuilding\AssignMaterialsAndLayerPropertiesControl.xaml.cs">
+      <DependentUpon>AssignMaterialsAndLayerPropertiesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BatchBuilding\BatchMaterialsSelectControl.xaml.cs">
+      <DependentUpon>BatchMaterialsSelectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BatchBuilding\DevBatchSelectControl.xaml.cs">
+      <DependentUpon>DevBatchSelectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BatchBuilding\DevTemplatesSelectControl.xaml.cs">
+      <DependentUpon>DevTemplatesSelectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BatchBuilding\SelectBuildMethodControl.xaml.cs">
+      <DependentUpon>SelectBuildMethodControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BatchBuilding\SpreadsheetBuildControl.xaml.cs">
+      <DependentUpon>SpreadsheetBuildControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DevBatchVizControl.xaml.cs">
+      <DependentUpon>DevBatchVizControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MaterialsControl.xaml.cs">
+      <DependentUpon>MaterialsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\QDBatchesControl.xaml.cs">
+      <DependentUpon>QDBatchesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SolutionsControl.xaml.cs">
+      <DependentUpon>SolutionsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Factories\DeviceBatchFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Scheduling\Calendar.cs" />
+    <Compile Include="Scheduling\Controls\DevBatchSweepSchedulingControl.xaml.cs">
+      <DependentUpon>DevBatchSweepSchedulingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scheduling\Controls\MasterVoltageSweepSchedulingControl.xaml.cs">
+      <DependentUpon>MasterVoltageSweepSchedulingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scheduling\Converters\DateConverter.cs" />
+    <Compile Include="Scheduling\Converters\DayBorderColorConverter.cs" />
+    <Compile Include="Scheduling\Day.cs" />
+    <Compile Include="Scheduling\EquipmentSchedulingViewModel.cs" />
+    <Compile Include="Scheduling\EquipmentSchedulingWindow.xaml.cs">
+      <DependentUpon>EquipmentSchedulingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\BatchBuilderViewModel.cs" />
+    <Compile Include="ViewModels\DevTemplateBuilderVM.cs" />
+    <Compile Include="ViewModels\MaterialsSolutionsViewModel.cs" />
+    <Compile Include="ViewModels\QDBatchesViewModel.cs" />
+    <Compile Include="ViewModels\WPFDeviceBatchVM.cs" />
+    <Compile Include="ViewModels\WPFDeviceVM.cs" />
+    <Compile Include="Windows\AssignLifetimeDataToPixelWindow.xaml.cs">
+      <DependentUpon>AssignLifetimeDataToPixelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\BatchBuilderWindow.xaml.cs">
+      <DependentUpon>BatchBuilderWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DevBatchVoltageSweepSchedulingWindow.xaml.cs">
+      <DependentUpon>DevBatchVoltageSweepSchedulingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DeviceBatchWindow.xaml.cs">
+      <DependentUpon>DeviceBatchWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DeviceWindow.xaml.cs">
+      <DependentUpon>DeviceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DevTemplateBuilderWindow.xaml.cs">
+      <DependentUpon>DevTemplateBuilderWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MaterialsSolutionsWindow.xaml.cs">
+      <DependentUpon>MaterialsSolutionsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QDBatchesWindow.xaml.cs">
+      <DependentUpon>QDBatchesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SolutionsWindow.xaml.cs">
+      <DependentUpon>SolutionsWindow.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\BatchBuilding\AssignMaterialsAndLayerPropertiesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BatchBuilding\BatchMaterialsSelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BatchBuilding\DevBatchSelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BatchBuilding\DevTemplatesSelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BatchBuilding\SelectBuildMethodControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BatchBuilding\SpreadsheetBuildControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DevBatchVizControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MaterialsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\QDBatchesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SolutionsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionary1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scheduling\Controls\DevBatchSweepSchedulingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scheduling\Controls\MasterVoltageSweepSchedulingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scheduling\EquipmentSchedulingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scheduling\Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AssignLifetimeDataToPixelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\BatchBuilderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DevBatchVoltageSweepSchedulingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DeviceBatchWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DeviceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DevTemplateBuilderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MaterialsSolutionsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QDBatchesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SolutionsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Scheduling\Images\move_next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Scheduling\Images\move_prev.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

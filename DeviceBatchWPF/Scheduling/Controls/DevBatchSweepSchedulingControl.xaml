@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="DeviceBatchWPF.Scheduling.Controls.DevBatchSweepSchedulingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DeviceBatchWPF.Scheduling.Controls"
+             mc:Ignorable="d" 
+             d:SizeToContent="WidthAndHeight">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <ComboBox        
+                    x:Name="cboMonth" 
+                    HorizontalAlignment="Center" 
+                    Height="33" Margin="8,8,0,0" 
+                    VerticalAlignment="Top" Width="222" 
+                    FontSize="17" 
+                    ItemsSource="{Binding Months, UpdateSourceTrigger=PropertyChanged}" 
+                    SelectedItem="{Binding SelectedMonth,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                />
+            <WrapPanel HorizontalAlignment="Center">
+                <Button FontFamily="Marlett" FontSize="17" Content="3" Command="{Binding GoToPreviousMonth}"></Button>
+                <TextBlock FontSize="17">Change Month</TextBlock>
+                <Button FontFamily="Marlett" FontSize="17" Content="4" Command="{Binding GoToNextMonth}"></Button>
+            </WrapPanel>
+            <Button Background="CornflowerBlue"
+                    Width="222"
+                        Command="{Binding GoToMasterVoltageSweepSchedulingControl}">
+                Go To Master Scheduling Calendar
+            </Button>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Center" Grid.Column="1">
+            <WrapPanel>
+                <TextBlock FontWeight="Bold" Text="DeviceBatch: "></TextBlock>
+                <TextBlock Text="{Binding DBVM.TheDeviceBatch.Name,UpdateSourceTrigger=PropertyChanged}"/>
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock FontWeight="Bold" Text="Voltage Sweeps Start Date: "></TextBlock>
+                <DatePicker SelectedDate="{Binding VoltageSweepsPeriodStartDate,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock FontWeight="Bold" Text="Test Interval (days): "></TextBlock>
+                <TextBox Text="{Binding VoltageSweepIntervalDays,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock FontWeight="Bold" Text="Number of Tests to Add: "></TextBlock>
+                <TextBox Text="{Binding NumberOfVoltageSweeps,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+            </WrapPanel>
+            <Button Background="OrangeRed"
+                        Command="{Binding AddNewVoltageSweepTasks}">
+                Schedule New Voltage Sweeps
+            </Button>
+            <Separator Height="17"></Separator>
+            <Button Background="OrangeRed"
+                        Command="{Binding SaveChanges}">
+                Save Schedule Changes
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="2">
+            <TextBlock HorizontalAlignment="Center">Scheduled Voltage Sweeps:</TextBlock>
+            <ListBox
+                    HorizontalAlignment="Center"                    
+                    ItemsSource="{Binding DevBatchVoltageSweeps,UpdateSourceTrigger=PropertyChanged}"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    Background="{x:Null}" Foreground="Black"
+                    >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel>
+                            <TextBlock Text="Scheduled Date:  "></TextBlock>
+                            <DatePicker SelectedDate="{Binding ScheduledDate,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                            <Button
+                                    FontFamily="Marlett"
+                                    FontSize="13"
+                                    Content="r"
+                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteTask}" 
+                                    CommandParameter="{Binding}"
+                            ></Button>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+    </Grid>
+</UserControl>

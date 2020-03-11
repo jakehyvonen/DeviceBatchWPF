@@ -1,0 +1,151 @@
+﻿<Window x:Class="DeviceBatchWPF.Windows.DeviceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeviceBatchWPF.Windows"
+         mc:Ignorable="d"
+        Title="DeviceWindow" SizeToContent="WidthAndHeight" MinHeight="444" MinWidth="333">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding GoToPreviousDeviceInBatch}" Key="Left"/>
+        <KeyBinding Command="{Binding GoToNextDeviceInBatch}" Key="Right"/>
+
+    </Window.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <!--dum
+            <RowDefinition Height="4"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            -->
+        </Grid.RowDefinitions>
+
+        <WrapPanel Grid.Row="0">
+            <Label>Device:</Label>
+            <TextBlock Text="{Binding TheDevice.Label, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+            <Label>Visualization Mode:</Label>
+            <ComboBox 
+                ItemsSource="{Binding ControlsDict}" 
+                SelectedValuePath="Value" DisplayMemberPath="Key" 
+                SelectedValue="{Binding ActiveUserControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                />
+            <Button Command="{Binding GoToPreviousDeviceInBatch}">Previous Device</Button>
+            <Button Command="{Binding GoToNextDeviceInBatch}">Next Device</Button>
+        </WrapPanel>
+        <!--pretty sure this grid is necessary to get the plot to adjust and fill the window when it is resized by the user-->
+        <Grid
+            Grid.Row="1"
+            >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ContentControl 
+            Grid.Row="0" 
+            Grid.Column="0"
+            x:Name="contentControl" 
+            >
+                <ContentPresenter Height="Auto" Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="{Binding ActiveUserControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                </ContentPresenter>
+            </ContentControl>
+        </Grid>
+        <!-- get rid of this shiiiet
+        <GridSplitter Background="Gray" Grid.Row="2" Height="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <WrapPanel HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0">
+                <Label>Left Axis</Label>
+                <ComboBox 
+                        ItemsSource="{Binding TheLifetimePlotVM.LifetimePropertyDict}" 
+                        SelectedValuePath="Value" DisplayMemberPath="Key" 
+                        SelectedValue="{Binding TheLifetimePlotVM.SelectedLeftAxisProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    />
+                <ComboBox 
+                        ItemsSource="{Binding TheLifetimePlotVM.LeftAxisDict}" 
+                        SelectedValuePath="Value" DisplayMemberPath="Key" 
+                        SelectedValue="{Binding TheLifetimePlotVM.SelectedLeftAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    />
+            </WrapPanel>
+            <oxy:PlotView Width="Auto" Grid.Row="1" Grid.Column="0" Height="Auto" MinHeight="333" Model="{Binding TheLifetimePlotVM.ThePlotModel, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+                
+            </StackPanel>
+        </Grid>
+        -->
+        <!--backup of version without pixel images where everything was working right proper orky
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="4"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <WrapPanel Grid.Row="0">
+            <Label>Visualization Mode:</Label>
+            <ComboBox 
+                ItemsSource="{Binding ControlsDict}" 
+                SelectedValuePath="Value" DisplayMemberPath="Key" 
+                SelectedValue="{Binding ActiveUserControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                />
+        </WrapPanel>
+        <Grid
+            Grid.Row="1"
+            >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ContentControl 
+            Grid.Row="0" 
+            Grid.Column="0"
+            x:Name="contentControl" 
+            >
+                <ContentPresenter Height="Auto" Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="{Binding ActiveUserControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                </ContentPresenter>
+            </ContentControl>
+        </Grid>
+        <GridSplitter Background="Gray" Grid.Row="2" Height="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <WrapPanel HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0">
+                <Label>Left Axis</Label>
+                <ComboBox 
+                        ItemsSource="{Binding TheLifetimePlotVM.LifetimePropertyDict}" 
+                        SelectedValuePath="Value" DisplayMemberPath="Key" 
+                        SelectedValue="{Binding TheLifetimePlotVM.SelectedLeftAxisProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    />
+                <ComboBox 
+                        ItemsSource="{Binding TheLifetimePlotVM.LeftAxisDict}" 
+                        SelectedValuePath="Value" DisplayMemberPath="Key" 
+                        SelectedValue="{Binding TheLifetimePlotVM.SelectedLeftAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    />
+            </WrapPanel>
+            <oxy:PlotView Width="Auto" Grid.Row="1" Grid.Column="0" Height="Auto" MinHeight="333" Model="{Binding TheLifetimePlotVM.ThePlotModel, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+
+            </StackPanel>
+        </Grid>
+        -->
+    </Grid>
+</Window>
